@@ -7,6 +7,13 @@
             <div class="card">
                 <div class="card-header">2FA Setting</div>
                 <div class="card-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                    </div>
+                @endif
                     <form role="form" method="post" action="{{ route('enable_2fa_setting') }}">
                         {{ csrf_field() }}
                         <h2>Scan barcode</h2>
@@ -21,7 +28,7 @@
                             After scanning the barcode image, the app will display a six-digit code that you can enter below.
                         </p>
                         <div class="form-group">
-                            <input type="text" name="code" class="form-control" placeholder="123456">
+                            <input type="text" name="code" class="form-control" placeholder="123456" autocomplete="off" maxlength="6">
                         </div>
                         <div class="form-group">
                             <button class="btn btn-success">Enable</button>

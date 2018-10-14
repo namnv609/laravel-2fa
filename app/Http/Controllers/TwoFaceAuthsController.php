@@ -23,4 +23,24 @@ class TwoFaceAuthsController extends Controller
 
         return view("two_face_auths.index", compact("qrCodeUrl"));
     }
+
+    public function enable(Request $request)
+    {
+        $this->validate($request, [
+            "code" => "required|digits:6"
+        ]);
+
+        $googleAuthenticator = new \PHPGangsta_GoogleAuthenticator();
+        $secretCode = session("secret_code");
+
+        if (!$googleAuthenticator->verifyCode($secretCode, $request->get("code"), 0)) {
+            return redirect("home")->with("error", "Invalid code");
+        }
+
+        $user = auth()->user();
+        $user->secret_code = $secretCode;
+        $user->save();
+
+        return redirect("home")->with("status", "2FA enabled!");
+    }
 }
