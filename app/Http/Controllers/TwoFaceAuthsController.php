@@ -40,6 +40,7 @@ class TwoFaceAuthsController extends Controller
         $user = auth()->user();
         $user->secret_code = $secretCode;
         $user->save();
+        session(["2fa_verified" => true]);
 
         return redirect("home")->with("status", "2FA enabled!");
     }
