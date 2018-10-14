@@ -18,3 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::group(["prefix" => "two_face_auths"], function() {
+    Route::get("/", "TwoFaceAuthsController@index")->name("2fa_setting");
+    Route::post("/enable", "TwoFaceAuthsController@enable")->name("enable_2fa_setting");
+});
